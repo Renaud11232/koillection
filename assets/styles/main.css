@@ -171,6 +171,7 @@ h2 {
 
 .btn, .btn-flat, .btn-floating, .btn-large, .btn-small {
     padding: 20px;
+    width: fit-content;
 }
 
 .fa-angle-left::before {
@@ -2296,4 +2297,39 @@ tr {
     padding: 6px 12px;
     top: -30px;
     left: 47px;
+}
+
+.filter .fa-remove {
+    cursor: pointer;
+}
+
+.search-block {
+    border-style: dashed;
+    border-radius: 10px;
+    padding: 30px 25px 10px 25px;
+}
+
+.search-block .btn {
+    margin-top: -75px;
+}
+
+.search-block .icon-holder {
+    margin-top: -25px;
+}
+
+.block {
+    margin-bottom: 20px;
+}
+
+.row .btn {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.advanced-search-buttons .btn {
+    margin-top: 8px;
+}
+
+#save-and-submit .modal-footer .right {
+    display: flex;
 }
