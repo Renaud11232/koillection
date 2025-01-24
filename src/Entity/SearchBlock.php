@@ -7,6 +7,7 @@ namespace App\Entity;
 use App\Repository\SearchBlockRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -23,6 +24,7 @@ class SearchBlock
     private ?string $condition = null;
 
     #[ORM\OneToMany(targetEntity: SearchFilter::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => Order::Ascending->value])]
     private DoctrineCollection $filters;
 
     #[ORM\ManyToOne(targetEntity: Search::class, inversedBy: 'blocks')]

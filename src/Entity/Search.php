@@ -8,10 +8,10 @@ use App\Entity\Interfaces\BreadcrumbableInterface;
 use App\Enum\DisplayModeEnum;
 use App\Repository\SearchRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Order;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: SearchRepository::class)]
@@ -28,6 +28,7 @@ class Search implements BreadcrumbableInterface
     private string $displayMode = DisplayModeEnum::DISPLAY_MODE_GRID;
 
     #[ORM\OneToMany(targetEntity: SearchBlock::class, mappedBy: 'search', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => Order::Ascending->value])]
     private DoctrineCollection $blocks;
 
     #[ORM\ManyToOne(targetEntity: User::class)]

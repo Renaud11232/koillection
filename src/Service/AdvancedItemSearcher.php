@@ -4,22 +4,13 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Collection;
-use App\Entity\Interfaces\BreadcrumbableInterface;
-use App\Entity\Item;
-use App\Entity\Scraper;
 use App\Entity\Search;
-use App\Entity\Tag;
-use App\Entity\User;
 use App\Enum\AdvancedItemSearch\ConditionEnum;
 use App\Enum\AdvancedItemSearch\OperatorEnum;
 use App\Enum\AdvancedItemSearch\TypeEnum;
 use App\Enum\DatumTypeEnum;
-use App\Enum\ScraperTypeEnum;
-use App\Model\BreadcrumbElement;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
 
 class AdvancedItemSearcher
 {
@@ -34,12 +25,12 @@ class AdvancedItemSearcher
             ->leftJoin('item.data', 'datum')
         ;
 
-        foreach ($search->getBlocks() as $key => $block) {
+        foreach ($search->getBlocks() as $blockKey => $block) {
             $blockParts = [];
-            foreach ($block->getFilters() as $filter) {
+            foreach ($block->getFilters() as $filterKey => $filter) {
                 $filterParts = [];
                 if ($filter->getCondition()) {
-                    $filterParts[] = $filter->getCondition();
+                    $filterParts[] = strtoupper($filter->getCondition());
                 }
 
                 $filterParts[] = match ($filter->getType()) {
@@ -57,7 +48,6 @@ class AdvancedItemSearcher
             }
 
             match (true) {
-                $key === 0 => $qb->where($blockSql),
                 $block->getCondition() === ConditionEnum::CONDITION_AND => $qb->andWhere($blockSql),
                 $block->getCondition() === ConditionEnum::CONDITION_OR => $qb->orWhere($blockSql),
             };

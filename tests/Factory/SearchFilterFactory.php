@@ -19,9 +19,9 @@ final class SearchFilterFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'operator' => self::faker()->text(),
-            'type' => self::faker()->text(),
-            'value' => self::faker()->text(),
+            'operator' => null,
+            'type' => null,
+            'value' => null,
         ];
     }
 
