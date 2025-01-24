@@ -108,34 +108,14 @@ class SearchFilterType extends AbstractType
             function (FormEvent $event): void {
                 $form = $event->getForm();
                 $data = $event->getData();
-                list($label, $type) = explode('_koillection_separator_', $data['datum']);
-
-                if ($type === DatumTypeEnum::TYPE_CHECKBOX) {
-                    $form
-                        ->add('value', TextType::class, [
-                            'required' => false,
-                            'model_transformer' => new CallbackTransformer(
-                                static function ($value) {
-                                    return $value === true ? 'on' : null;
-                                },
-                                static function ($value) {
-                                    return $value === 'on' ? '1' : '0';
-                                }
-                            ),
-                        ])
-                    ;
-                } else {
-                    $form
-                        ->add('value', TextType::class, [
-                            'required' => true,
-                        ])
-                    ;
-                }
 
                 if ($data['type'] === TypeEnum::TYPE_NAME) {
                     $form
                         ->add('operator', ChoiceType::class, [
                             'choices' => array_flip(OperatorEnum::getOperatorsByType('item_name')),
+                            'required' => true,
+                        ])
+                        ->add('value', TextType::class, [
                             'required' => true,
                         ])
                     ;
@@ -175,6 +155,29 @@ class SearchFilterType extends AbstractType
                             },
                         ])
                     ;
+
+                    list($label, $type) = explode('_koillection_separator_', $data['datum']);
+                    if ($type === DatumTypeEnum::TYPE_CHECKBOX) {
+                        $form
+                            ->add('value', TextType::class, [
+                                'required' => false,
+                                'model_transformer' => new CallbackTransformer(
+                                    static function ($value) {
+                                        return $value === true ? 'on' : null;
+                                    },
+                                    static function ($value) {
+                                        return $value === 'on' ? '1' : '0';
+                                    }
+                                ),
+                            ])
+                        ;
+                    } else {
+                        $form
+                            ->add('value', TextType::class, [
+                                'required' => true,
+                            ])
+                        ;
+                    }
                 }
             }
         );

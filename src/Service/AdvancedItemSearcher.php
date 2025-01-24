@@ -34,7 +34,7 @@ class AdvancedItemSearcher
             ->leftJoin('item.data', 'datum')
         ;
 
-        foreach ($search->getBlocks() as $block) {
+        foreach ($search->getBlocks() as $key => $block) {
             $blockParts = [];
             foreach ($block->getFilters() as $filter) {
                 $filterParts = [];
@@ -59,6 +59,7 @@ class AdvancedItemSearcher
             match ($block->getCondition()) {
                 ConditionEnum::CONDITION_AND => $qb->andWhere($blockSql),
                 ConditionEnum::CONDITION_OR => $qb->orWhere($blockSql),
+                null => ''
             };
         }
 

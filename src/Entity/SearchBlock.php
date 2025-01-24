@@ -19,7 +19,7 @@ class SearchBlock
     #[ORM\Column(type: Types::STRING, length: 36, unique: true, options: ['fixed' => true])]
     private string $id;
 
-    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[ORM\Column(type: Types::STRING, nullable: true, name: "`condition`")]
     private ?string $condition = null;
 
     #[ORM\OneToMany(targetEntity: SearchFilter::class, mappedBy: 'block', cascade: ['persist'], orphanRemoval: true)]
