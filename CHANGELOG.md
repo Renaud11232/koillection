@@ -1,6 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.3] / 2025-01-24
+### Features
+- Add advanced item search, can be accessed via regular search page (benjaminjonard)
+
+### Miscellaneous
+- Upgrade PHP and JS dependencies (benjaminjonard)
+
 ## [1.6.2] / 2024-12-30
 ### Fixes
 - Attempt to fix search error (benjaminjonard)
