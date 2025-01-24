@@ -56,10 +56,10 @@ class AdvancedItemSearcher
                 continue;
             }
 
-            match ($block->getCondition()) {
-                ConditionEnum::CONDITION_AND => $qb->andWhere($blockSql),
-                ConditionEnum::CONDITION_OR => $qb->orWhere($blockSql),
-                null => ''
+            match (true) {
+                $key === 0 => $qb->where($blockSql),
+                $block->getCondition() === ConditionEnum::CONDITION_AND => $qb->andWhere($blockSql),
+                $block->getCondition() === ConditionEnum::CONDITION_OR => $qb->orWhere($blockSql),
             };
         }
 
