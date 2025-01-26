@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.4] / 2025-01-26
+### Fixes
+- Fix missing variable on advanced item search (benjaminjonard)
+- Start error counter at 1 in admin panel (benjaminjonard)
+
 ## [1.6.3] / 2025-01-24
 ### Features
 - Add advanced item search, can be accessed via regular search page (benjaminjonard)
