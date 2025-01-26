@@ -83,6 +83,12 @@ class AdvancedItemSearcher
         $paramType = uniqid('datum_type_');
         $queryBuilder->setParameter($paramType, $datumType);
 
+        $cast = match ($datumType) {
+            DatumTypeEnum::TYPE_NUMBER, DatumTypeEnum::TYPE_RATING => 'INTEGER',
+            DatumTypeEnum::TYPE_DATE => 'DATE',
+            default => null
+        };
+
         $sql = '';
 
         if ($operator === OperatorEnum::OPERATOR_EQUAL) {
@@ -102,22 +108,22 @@ class AdvancedItemSearcher
 
         if ($operator === OperatorEnum::OPERATOR_SUPERIOR) {
             $queryBuilder->setParameter($paramValue, $value);
-            $sql = "CAST(datum.value AS INTEGER) > CAST(:{$paramValue} AS INTEGER)";
+            $sql = "CAST(datum.value AS $cast) > CAST(:{$paramValue} AS $cast)";
         }
 
         if ($operator === OperatorEnum::OPERATOR_SUPERIOR_OR_EQUAL) {
             $queryBuilder->setParameter($paramValue, $value);
-            $sql = "CAST(datum.value AS INTEGER) >= CAST(:{$paramValue} AS INTEGER)";
+            $sql = "CAST(datum.value AS $cast) >= CAST(:{$paramValue} AS $cast)";
         }
 
         if ($operator === OperatorEnum::OPERATOR_INFERIOR) {
             $queryBuilder->setParameter($paramValue, $value);
-            $sql = "CAST(datum.value AS INTEGER) < CAST(:{$paramValue} AS INTEGER)";
+            $sql = "CAST(datum.value AS $cast) < CAST(:{$paramValue} AS $cast)";
         }
 
         if ($operator === OperatorEnum::OPERATOR_INFERIOR_OR_EQUAL) {
             $queryBuilder->setParameter($paramValue, $value);
-            $sql = "CAST(datum.value AS INTEGER) <= CAST(:{$paramValue} AS INTEGER)";
+            $sql = "CAST(datum.value AS $cast) <= CAST(:{$paramValue} AS $cast)";
         }
 
         return "(datum.label = :{$paramLabel} AND datum.type = :{$paramType} AND {$sql})";
