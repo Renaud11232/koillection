@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.6] / 2025-01-26
+### Fixes
+- Fix searches with multiple data filters (benjaminjonard)
+- Fix incomplete list values in data filters (benjaminjonard)
+
 ## [1.6.5] / 2025-01-26
 ### Fixes
 - Fix date comparison in advanced item search (benjaminjonard)
