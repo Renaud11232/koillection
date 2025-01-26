@@ -48,7 +48,7 @@ class Error
     public function __construct()
     {
         $this->id = Uuid::v7()->toRfc4122();
-        $this->count = 0;
+        $this->count = 1;
     }
 
     public function getId(): ?string
