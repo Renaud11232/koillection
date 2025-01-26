@@ -103,4 +103,30 @@ class DatumRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    public function findAllUniqueListValues(string $label, string $type): array
+    {
+        $values = [];
+
+        $results = $this
+            ->createQueryBuilder('datum')
+            ->select('datum.value')
+            ->where("datum.type = :type")
+            ->andWhere('datum.label = :label')
+            ->setParameter('type', $type)
+            ->setParameter('label', $label)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        foreach ($results as $result) {
+            foreach (json_decode($result['value'], true) as $value) {
+                if (!in_array($value, $values)) {
+                    $values[] = $value;
+                }
+            }
+        }
+
+        return $values;
+    }
 }
