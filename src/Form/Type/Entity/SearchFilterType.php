@@ -129,6 +129,8 @@ class SearchFilterType extends AbstractType
                         $labels["{$datum['label']} <i>({$datum['type']})</i>"] = "{$datum['label']}_koillection_separator_{$datum['type']}";
                     }
 
+                    list($label, $type) = explode('_koillection_separator_', $data['datum']);
+
                     $form
                         ->add('operator', ChoiceType::class, [
                             'choices' => array_flip(OperatorEnum::getOperatorsByType($type)),
@@ -156,7 +158,6 @@ class SearchFilterType extends AbstractType
                         ])
                     ;
 
-                    list($label, $type) = explode('_koillection_separator_', $data['datum']);
                     if ($type === DatumTypeEnum::TYPE_CHECKBOX) {
                         $form
                             ->add('value', TextType::class, [

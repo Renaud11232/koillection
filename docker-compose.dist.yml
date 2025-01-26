@@ -1,6 +1,4 @@
 #This docker-compose file is provided for dev purposes
-version: '3'
-
 services:
     #FPM image
     koillection:
