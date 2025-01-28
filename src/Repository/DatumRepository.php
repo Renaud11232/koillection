@@ -120,11 +120,16 @@ class DatumRepository extends ServiceEntityRepository
         ;
 
         foreach ($results as $result) {
-            foreach (json_decode($result['value'], true) as $value) {
-                if (!in_array($value, $values)) {
-                    $values[] = $value;
+            $jsonResult = json_decode($result['value'], true);
+
+            if ($jsonResult !== null) {
+                foreach ($jsonResult as $value) {
+                    if ($value !== null && !in_array($value, $values)) {
+                        $values[] = $value;
+                    }
                 }
             }
+
         }
 
         return $values;
