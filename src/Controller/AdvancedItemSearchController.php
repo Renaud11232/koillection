@@ -80,6 +80,8 @@ class AdvancedItemSearchController extends AbstractController
         }
 
         $results = $advancedItemSearcher->search($search);
+        $search->setNumberOfResults(\count($results));
+        $managerRegistry->getManager()->flush();
 
         return $this->render('App/AdvancedItemSearch/show.html.twig', [
             'form' => $form,

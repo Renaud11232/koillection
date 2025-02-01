@@ -25,6 +25,9 @@ class Search implements BreadcrumbableInterface
     #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $name = null;
 
+    #[ORM\Column(type: Types::BIGINT, nullable: true)]
+    private ?int $numberOfResults = null;
+
     private string $displayMode = DisplayModeEnum::DISPLAY_MODE_GRID;
 
     #[ORM\OneToMany(targetEntity: SearchBlock::class, mappedBy: 'search', cascade: ['persist'], orphanRemoval: true)]
@@ -112,6 +115,18 @@ class Search implements BreadcrumbableInterface
     public function setOwner(?User $owner): Search
     {
         $this->owner = $owner;
+
+        return $this;
+    }
+
+    public function getNumberOfResults(): ?int
+    {
+        return $this->numberOfResults;
+    }
+
+    public function setNumberOfResults(?int $numberOfResults): Search
+    {
+        $this->numberOfResults = $numberOfResults;
 
         return $this;
     }

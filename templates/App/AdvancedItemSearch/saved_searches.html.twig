@@ -21,7 +21,10 @@
                 <thead>
                 <tr>
                     <th>{{ 'label.name'|trans }}</th>
+                    <th></th>
+                    <th></th>
                     {% if context == 'default' %}
+                        <th>{{ 'label.number_of_results'|trans }}</th>
                         <th>{{ 'label.actions'|trans }}</th>
                     {% endif %}
                 </tr>
@@ -30,7 +33,12 @@
                 {% for search in searches %}
                     <tr class="list-element">
                         <td><a href="{{ path('app_advanced_item_search_show', {id: search.id}) }}">{{ search.name }}</a></td>
+                        <td></td>
+                        <td></td>
                         {% if context == 'default' %}
+                            <td>
+                                {{ search.numberOfResults|default('-') }}
+                            </td>
                             <td>
                                 {{ include('App/_partials/_icon/_delete.html.twig', {
                                     path: path('app_advanced_item_search_delete', {id: search.id}),

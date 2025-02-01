@@ -3823,5 +3823,11 @@
         <target>Does not contain</target>
       </segment>
     </unit>
+    <unit id="lWyVrKn" name="label.number_of_results">
+      <segment state="translated">
+        <source>Number of results</source>
+        <target>Number of results</target>
+      </segment>
+    </unit>
   </file>
 </xliff>
