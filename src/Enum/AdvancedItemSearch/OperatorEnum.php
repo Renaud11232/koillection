@@ -10,7 +10,11 @@ class OperatorEnum
 {
     public const string OPERATOR_EQUAL = 'equal';
 
+    public const string OPERATOR_NOT_EQUAL = 'not-equal';
+
     public const string OPERATOR_CONTAINS = 'contains';
+
+    public const string OPERATOR_DOES_NOT_CONTAIN = 'does-not-contain';
 
     public const string OPERATOR_SUPERIOR = 'superior';
 
@@ -24,7 +28,9 @@ class OperatorEnum
     {
         return [
             self::OPERATOR_EQUAL => 'global.advanced_item_search.operator.equal',
+            self::OPERATOR_NOT_EQUAL => 'global.advanced_item_search.operator.not_equal',
             self::OPERATOR_CONTAINS => 'global.advanced_item_search.operator.contains',
+            self::OPERATOR_DOES_NOT_CONTAIN => 'global.advanced_item_search.operator.does_not_contain',
             self::OPERATOR_SUPERIOR => 'global.advanced_item_search.operator.superior',
             self::OPERATOR_SUPERIOR_OR_EQUAL => 'global.advanced_item_search.operator.superior_or_equal',
             self::OPERATOR_INFERIOR => 'global.advanced_item_search.operator.inferior',
@@ -42,20 +48,25 @@ class OperatorEnum
         return match ($type) {
             DatumTypeEnum::TYPE_TEXT, DatumTypeEnum::TYPE_TEXTAREA, DatumTypeEnum::TYPE_LINK, 'item_name' => [
                 OperatorEnum::OPERATOR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EQUAL),
-                OperatorEnum::OPERATOR_CONTAINS => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_CONTAINS)
+                OperatorEnum::OPERATOR_NOT_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_NOT_EQUAL),
+                OperatorEnum::OPERATOR_CONTAINS => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_CONTAINS),
+                OperatorEnum::OPERATOR_DOES_NOT_CONTAIN => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_DOES_NOT_CONTAIN),
             ],
             DatumTypeEnum::TYPE_COUNTRY, DatumTypeEnum::TYPE_CHECKBOX => [
-                OperatorEnum::OPERATOR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EQUAL)
+                OperatorEnum::OPERATOR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EQUAL),
+                OperatorEnum::OPERATOR_NOT_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_NOT_EQUAL)
             ],
             DatumTypeEnum::TYPE_DATE, DatumTypeEnum::TYPE_NUMBER, DatumTypeEnum::TYPE_RATING => [
                 OperatorEnum::OPERATOR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EQUAL),
+                OperatorEnum::OPERATOR_NOT_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_NOT_EQUAL),
                 OperatorEnum::OPERATOR_SUPERIOR => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_SUPERIOR),
                 OperatorEnum::OPERATOR_SUPERIOR_OR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_SUPERIOR_OR_EQUAL),
                 OperatorEnum::OPERATOR_INFERIOR => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_INFERIOR),
                 OperatorEnum::OPERATOR_INFERIOR_OR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_INFERIOR_OR_EQUAL),
             ],
             DatumTypeEnum::TYPE_LIST, DatumTypeEnum::TYPE_CHOICE_LIST => [
-                OperatorEnum::OPERATOR_CONTAINS => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_CONTAINS)
+                OperatorEnum::OPERATOR_CONTAINS => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_CONTAINS),
+                OperatorEnum::OPERATOR_DOES_NOT_CONTAIN => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_DOES_NOT_CONTAIN),
             ],
         };
     }

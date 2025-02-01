@@ -64,9 +64,19 @@ class AdvancedItemSearcher
             return "LOWER(item.name) = LOWER(:{$paramValue})";
         }
 
+        if ($operator === OperatorEnum::OPERATOR_NOT_EQUAL) {
+            $queryBuilder->setParameter($paramValue, $value);
+            return "LOWER(item.name) != LOWER(:{$paramValue})";
+        }
+
         if ($operator === OperatorEnum::OPERATOR_CONTAINS) {
             $queryBuilder->setParameter($paramValue, "%{$value}%");
             return "LOWER(item.name) LIKE LOWER(:{$paramValue})";
+        }
+
+        if ($operator === OperatorEnum::OPERATOR_DOES_NOT_CONTAIN) {
+            $queryBuilder->setParameter($paramValue, "%{$value}%");
+            return "LOWER(item.name) NOT LIKE LOWER(:{$paramValue})";
         }
 
         return '';
@@ -103,9 +113,24 @@ class AdvancedItemSearcher
             }
         }
 
+        if ($operator === OperatorEnum::OPERATOR_NOT_EQUAL) {
+            if ($datumType === DatumTypeEnum::TYPE_NUMBER || $datumType === DatumTypeEnum::TYPE_RATING) {
+                $queryBuilder->setParameter($paramValue, $value);
+                $sql = "CAST($datumAlias.value AS INTEGER) != CAST(:{$paramValue} AS INTEGER)";
+            } else {
+                $queryBuilder->setParameter($paramValue, $value);
+                $sql = "LOWER($datumAlias.value) != LOWER(:{$paramValue})";
+            }
+        }
+
         if ($operator === OperatorEnum::OPERATOR_CONTAINS) {
             $queryBuilder->setParameter($paramValue, "%{$value}%");
             $sql = "LOWER($datumAlias.value) LIKE LOWER(:{$paramValue})";
+        }
+
+        if ($operator === OperatorEnum::OPERATOR_DOES_NOT_CONTAIN) {
+            $queryBuilder->setParameter($paramValue, "%{$value}%");
+            $sql = "LOWER($datumAlias.value) NOT LIKE LOWER(:{$paramValue})";
         }
 
         if ($operator === OperatorEnum::OPERATOR_SUPERIOR) {

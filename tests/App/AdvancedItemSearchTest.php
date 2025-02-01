@@ -337,4 +337,48 @@ class AdvancedItemSearchTest extends AppTestCase
         $this->assertSame('Frieren #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
         $this->assertSame('Le problème à trois corps', $crawler->filter('.collection-item')->eq(1)->filter('img')->attr('title'));
     }
+
+    public function test_name_does_not_contain(): void
+    {
+        // Arrange
+        $user = UserFactory::createOne()->_real();
+        $this->client->loginUser($user);
+        $search = SearchFactory::createOne(['owner' => $user]);
+        $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
+        SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_NAME, 'operator' => OperatorEnum::OPERATOR_DOES_NOT_CONTAIN, 'value' => 'Frieren']);
+
+        $collection = CollectionFactory::createOne(['owner' => $user]);
+        ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Frieren #1']);
+        ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Berserk #1']);
+
+        // Act
+        $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
+
+        // Assert
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('.collection-item'));
+        $this->assertSame('Berserk #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
+    }
+
+    public function test_name_not_equal(): void
+    {
+        // Arrange
+        $user = UserFactory::createOne()->_real();
+        $this->client->loginUser($user);
+        $search = SearchFactory::createOne(['owner' => $user]);
+        $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
+        SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_NAME, 'operator' => OperatorEnum::OPERATOR_NOT_EQUAL, 'value' => 'Frieren #1']);
+
+        $collection = CollectionFactory::createOne(['owner' => $user]);
+        ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Frieren #1']);
+        ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Berserk #1']);
+
+        // Act
+        $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
+
+        // Assert
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('.collection-item'));
+        $this->assertSame('Berserk #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
+    }
 }
