@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.7] / 2025-02-02
+### Fixes
+- Fix empty values in lists for advanced item search (benjaminjonard)
+- Restrict list values to item datum in advanced item search (benjaminjonard)
+
+### Miscellaneous
+- Add NOT EQUAL and DOES NOT CONTAIN operators for search (benjaminjonard)
+- Add result counter on search (benjaminjonard)
+- Upgrade PHP and JS dependencies (benjaminjonard)
+- Update translations, thanks to all contributors on [Crowdin](https://crowdin.com/project/koillection)
+
 ## [1.6.6] / 2025-01-26
 ### Fixes
 - Fix searches with multiple data filters (benjaminjonard)
