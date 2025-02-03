@@ -141,7 +141,7 @@ class AdvancedItemSearchController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/advanced-item-search/load-datum-inputs/{value}', name: 'app_advanced_item_search_load_datum_inputs', methods: ['GET', 'POST'])]
+    #[Route(path: '/advanced-item-search/load-datum-inputs/{value}', name: 'app_advanced_item_search_load_datum_inputs', methods: ['GET', 'POST'], requirements: ['value' => '.+'])]
     public function loadDatumInputs(string $value) : Response
     {
         list($label, $type) = explode('_koillection_separator_', $value);
