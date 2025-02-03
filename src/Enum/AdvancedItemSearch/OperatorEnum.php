@@ -24,6 +24,14 @@ class OperatorEnum
 
     public const string OPERATOR_INFERIOR_OR_EQUAL = 'inferior-or-equal';
 
+    public const string OPERATOR_EMPTY = 'empty';
+
+    public const string OPERATOR_NOT_EMPTY = 'not-empty';
+
+    public const string OPERATOR_EXISTS = 'exists';
+
+    public const string OPERATOR_DOES_NOT_EXIST = 'does-not-exist';
+
     public static function getOperatorLabels(): array
     {
         return [
@@ -35,6 +43,10 @@ class OperatorEnum
             self::OPERATOR_SUPERIOR_OR_EQUAL => 'global.advanced_item_search.operator.superior_or_equal',
             self::OPERATOR_INFERIOR => 'global.advanced_item_search.operator.inferior',
             self::OPERATOR_INFERIOR_OR_EQUAL => 'global.advanced_item_search.operator.inferior_or_equal',
+            self::OPERATOR_EMPTY => 'global.advanced_item_search.operator.empty',
+            self::OPERATOR_NOT_EMPTY => 'global.advanced_item_search.operator.not_empty',
+            self::OPERATOR_EXISTS => 'global.advanced_item_search.operator.exists',
+            self::OPERATOR_DOES_NOT_EXIST => 'global.advanced_item_search.operator.does_not_exist',
         ];
     }
 
@@ -45,7 +57,7 @@ class OperatorEnum
 
     public static function getOperatorsByType(string $type): array
     {
-        return match ($type) {
+        $operators = match ($type) {
             DatumTypeEnum::TYPE_TEXT, DatumTypeEnum::TYPE_TEXTAREA, DatumTypeEnum::TYPE_LINK, 'item_name' => [
                 OperatorEnum::OPERATOR_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EQUAL),
                 OperatorEnum::OPERATOR_NOT_EQUAL => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_NOT_EQUAL),
@@ -69,5 +81,14 @@ class OperatorEnum
                 OperatorEnum::OPERATOR_DOES_NOT_CONTAIN => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_DOES_NOT_CONTAIN),
             ],
         };
+
+        if ($type !== 'item_name') {
+            $operators[OperatorEnum::OPERATOR_EMPTY] = OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EMPTY);
+            $operators[OperatorEnum::OPERATOR_NOT_EMPTY] = OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_NOT_EMPTY);
+            $operators[OperatorEnum::OPERATOR_EXISTS] = OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_EXISTS);
+            $operators[OperatorEnum::OPERATOR_DOES_NOT_EXIST] = OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_DOES_NOT_EXIST);
+        }
+
+        return $operators;
     }
 }

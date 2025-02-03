@@ -25,7 +25,9 @@
     <div class="s12 l4 xl2" data-search-filter-target="operatorInputContainer">
         {% if form.operator is defined %}
             {{ form_row(form.operator, {'label' : 'label.operator', 'attr': {
-                'data-controller' : 'select--default'
+                'data-controller' : 'select--default',
+                'data-action': 'change->search-filter#updateValueInput',
+                'data-search-filter-target': 'operatorInput'
             } }) }}
         {% endif %}
     </div>

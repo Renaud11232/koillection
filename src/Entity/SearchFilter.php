@@ -32,7 +32,7 @@ class SearchFilter
     #[ORM\Column(type: Types::STRING)]
     private ?string $operator = null;
 
-    #[ORM\Column(type: Types::STRING)]
+    #[ORM\Column(type: Types::STRING, nullable: true)]
     private ?string $value = null;
 
     #[ORM\ManyToOne(targetEntity: SearchBlock::class, inversedBy: 'filters')]

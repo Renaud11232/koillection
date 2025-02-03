@@ -205,13 +205,12 @@ class AdvancedItemSearchTest extends AppTestCase
         $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
         SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_DATUM, 'operator' => OperatorEnum::OPERATOR_CONTAINS, 'datumLabel' => 'Progress', 'datumType' => DatumTypeEnum::TYPE_CHOICE_LIST, 'value' => 'In progress']);
 
-
         $collection = CollectionFactory::createOne(['owner' => $user]);
         $item1 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Les champs de la Lune']);
-        DatumFactory::createOne(['item' => $item1, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_CHOICE_LIST, 'value' => 'In progress', 'label' => 'Progress']);
+        DatumFactory::createOne(['item' => $item1, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_CHOICE_LIST, 'value' => json_encode(['In progress']), 'label' => 'Progress']);
 
         $item2 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Astérix #1']);
-        DatumFactory::createOne(['item' => $item2, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_CHOICE_LIST, 'value' => 'Done', 'label' => 'Progress']);
+        DatumFactory::createOne(['item' => $item2, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_CHOICE_LIST, 'value' => json_encode(['Done']), 'label' => 'Progress']);
 
         // Act
         $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
@@ -380,5 +379,111 @@ class AdvancedItemSearchTest extends AppTestCase
         $this->assertResponseIsSuccessful();
         $this->assertCount(1, $crawler->filter('.collection-item'));
         $this->assertSame('Berserk #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
+    }
+
+    public function test_exists(): void
+    {
+        // Arrange
+        $user = UserFactory::createOne()->_real();
+        $this->client->loginUser($user);
+
+        $search = SearchFactory::createOne(['owner' => $user]);
+        $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
+        SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_DATUM, 'operator' => OperatorEnum::OPERATOR_EXISTS, 'datumLabel' => 'Pages', 'datumType' => DatumTypeEnum::TYPE_NUMBER]);
+
+
+        $collection = CollectionFactory::createOne(['owner' => $user]);
+        $item1 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Frieren #1']);
+        DatumFactory::createOne(['item' => $item1, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_NUMBER, 'value' => 250, 'label' => 'Pages']);
+
+        ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Astérix #1']);
+
+        // Act
+        $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
+
+        // Assert
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('.collection-item'));
+        $this->assertSame('Frieren #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
+    }
+
+    public function test_does_not_exists(): void
+    {
+        // Arrange
+        $user = UserFactory::createOne()->_real();
+        $this->client->loginUser($user);
+
+        $search = SearchFactory::createOne(['owner' => $user]);
+        $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
+        SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_DATUM, 'operator' => OperatorEnum::OPERATOR_DOES_NOT_EXIST, 'datumLabel' => 'Pages', 'datumType' => DatumTypeEnum::TYPE_NUMBER]);
+
+
+        $collection = CollectionFactory::createOne(['owner' => $user]);
+        $item1 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Frieren #1']);
+        DatumFactory::createOne(['item' => $item1, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_NUMBER, 'value' => 250, 'label' => 'Pages']);
+
+        ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Astérix #1']);
+
+        // Act
+        $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
+
+        // Assert
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('.collection-item'));
+        $this->assertSame('Astérix #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
+    }
+
+    public function test_empty(): void
+    {
+        // Arrange
+        $user = UserFactory::createOne()->_real();
+        $this->client->loginUser($user);
+
+        $search = SearchFactory::createOne(['owner' => $user]);
+        $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
+        SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_DATUM, 'operator' => OperatorEnum::OPERATOR_EMPTY, 'datumLabel' => 'Pages', 'datumType' => DatumTypeEnum::TYPE_NUMBER]);
+
+
+        $collection = CollectionFactory::createOne(['owner' => $user]);
+        $item1 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Frieren #1']);
+        DatumFactory::createOne(['item' => $item1, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_NUMBER, 'value' => 250, 'label' => 'Pages']);
+
+        $item2 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Astérix #1']);
+        DatumFactory::createOne(['item' => $item2, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_NUMBER, 'value' => null, 'label' => 'Pages']);
+
+        // Act
+        $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
+
+        // Assert
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('.collection-item'));
+        $this->assertSame('Astérix #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
+    }
+
+    public function test_not_empty(): void
+    {
+        // Arrange
+        $user = UserFactory::createOne()->_real();
+        $this->client->loginUser($user);
+
+        $search = SearchFactory::createOne(['owner' => $user]);
+        $block = SearchBlockFactory::createOne(['search' => $search, 'condition' => ConditionEnum::CONDITION_AND]);
+        SearchFilterFactory::createOne(['block' => $block, 'type' => TypeEnum::TYPE_DATUM, 'operator' => OperatorEnum::OPERATOR_NOT_EMPTY, 'datumLabel' => 'Pages', 'datumType' => DatumTypeEnum::TYPE_NUMBER]);
+
+
+        $collection = CollectionFactory::createOne(['owner' => $user]);
+        $item1 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Frieren #1']);
+        DatumFactory::createOne(['item' => $item1, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_NUMBER, 'value' => 250, 'label' => 'Pages']);
+
+        $item2 = ItemFactory::createOne(['collection' => $collection, 'owner' => $user, 'name' => 'Astérix #1']);
+        DatumFactory::createOne(['item' => $item2, 'owner' => $user, 'type' => DatumTypeEnum::TYPE_NUMBER, 'value' => null, 'label' => 'Pages']);
+
+        // Act
+        $crawler = $this->client->request(Request::METHOD_GET, '/advanced-item-search/' . $search->getId());
+
+        // Assert
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(1, $crawler->filter('.collection-item'));
+        $this->assertSame('Frieren #1', $crawler->filter('.collection-item')->eq(0)->filter('img')->attr('title'));
     }
 }

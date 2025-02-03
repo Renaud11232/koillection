@@ -3829,5 +3829,29 @@
         <target>Number of results</target>
       </segment>
     </unit>
+    <unit id="Fpd6bpF" name="global.advanced_item_search.operator.empty">
+      <segment state="translated">
+        <source>Empty</source>
+        <target>Empty</target>
+      </segment>
+    </unit>
+    <unit id="DXianrE" name="global.advanced_item_search.operator.not_empty">
+      <segment state="translated">
+        <source>Not empty</source>
+        <target>Not empty</target>
+      </segment>
+    </unit>
+    <unit id="rIkc77v" name="global.advanced_item_search.operator.exists">
+      <segment state="translated">
+        <source>Exists</source>
+        <target>Exists</target>
+      </segment>
+    </unit>
+    <unit id="dP7Y9jv" name="global.advanced_item_search.operator.does_not_exist">
+      <segment state="translated">
+        <source>Does not exist</source>
+        <target>Does not exist</target>
+      </segment>
+    </unit>
   </file>
 </xliff>

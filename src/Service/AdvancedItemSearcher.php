@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Entity\Datum;
 use App\Entity\Search;
 use App\Enum\AdvancedItemSearch\ConditionEnum;
 use App\Enum\AdvancedItemSearch\OperatorEnum;
@@ -82,10 +83,9 @@ class AdvancedItemSearcher
         return '';
     }
 
-    private function buildDatumFilter(QueryBuilder $queryBuilder, string $operator, string $value, string $datumLabel, string $datumType): string
+    private function buildDatumFilter(QueryBuilder $queryBuilder, string $operator, ?string $value, string $datumLabel, string $datumType): string
     {
         $datumAlias = uniqid('datum_');
-        $queryBuilder->leftJoin('item.data', $datumAlias);
 
         $paramValue = uniqid('datum_value_');
 
@@ -131,7 +131,6 @@ class AdvancedItemSearcher
                 $queryBuilder->setParameter($paramValue, "%{$value}%");
                 $sql = "LOWER($datumAlias.value) LIKE LOWER(:{$paramValue})";
             }
-
         }
 
         if ($operator === OperatorEnum::OPERATOR_DOES_NOT_CONTAIN) {
@@ -164,6 +163,24 @@ class AdvancedItemSearcher
             $sql = "CAST($datumAlias.value AS $cast) <= CAST(:{$paramValue} AS $cast)";
         }
 
-        return "($datumAlias.label = :{$paramLabel} AND $datumAlias.type = :{$paramType} AND {$sql})";
+        if ($operator === OperatorEnum::OPERATOR_EXISTS) {
+            $sql = "$datumAlias.id IS NOT NULL";
+        }
+
+        if ($operator === OperatorEnum::OPERATOR_DOES_NOT_EXIST) {
+            $sql = "$datumAlias.id IS NULL";
+        }
+
+        if ($operator === OperatorEnum::OPERATOR_EMPTY) {
+            $sql = "$datumAlias.id IS NOT NULL AND ($datumAlias.value IS NULL OR $datumAlias.value = '' OR $datumAlias.value = '[]')";
+        }
+
+        if ($operator === OperatorEnum::OPERATOR_NOT_EMPTY) {
+            $sql = "($datumAlias.value IS NOT NULL AND $datumAlias.value != '' AND $datumAlias.value != '[]')";
+        }
+
+        $queryBuilder->leftJoin('item.data', $datumAlias, 'WITH', "$datumAlias.label = :{$paramLabel} AND $datumAlias.type = :{$paramType}");
+
+        return $sql;
     }
 }

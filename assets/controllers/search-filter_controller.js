@@ -1,7 +1,13 @@
 import {Controller} from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['typeInput', 'datumInput', 'datumInputContainer', 'valueInputContainer', 'operatorInputContainer']
+    static targets = ['typeInput', 'datumInput', 'operatorInput', 'datumInputContainer', 'valueInputContainer', 'operatorInputContainer']
+
+    connect() {
+        super.connect();
+
+        this.updateValueInput();
+    }
 
     loadTypeInputs(){
         let self = this;
@@ -66,5 +72,14 @@ export default class extends Controller {
             self.valueInputContainerTarget.innerHTML = valueInputHtml;
             self.operatorInputContainerTarget.innerHTML = operatorInputHtml;
         })
+    }
+
+    updateValueInput()
+    {
+        if (['empty', 'not-empty', 'exists', 'does-not-exist'].includes(this.operatorInputTarget.value)) {
+            this.valueInputContainerTarget.classList.add('hidden');
+        } else {
+            this.valueInputContainerTarget.classList.remove('hidden');
+        }
     }
 }
