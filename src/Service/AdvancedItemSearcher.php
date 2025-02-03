@@ -124,13 +124,24 @@ class AdvancedItemSearcher
         }
 
         if ($operator === OperatorEnum::OPERATOR_CONTAINS) {
-            $queryBuilder->setParameter($paramValue, "%{$value}%");
-            $sql = "LOWER($datumAlias.value) LIKE LOWER(:{$paramValue})";
+            if ($datumType === DatumTypeEnum::TYPE_CHOICE_LIST || $datumType === DatumTypeEnum::TYPE_LIST) {
+                $queryBuilder->setParameter($paramValue, "%\"{$value}\"%");
+                $sql = "LOWER($datumAlias.value) LIKE LOWER(:{$paramValue})";
+            } else {
+                $queryBuilder->setParameter($paramValue, "%{$value}%");
+                $sql = "LOWER($datumAlias.value) LIKE LOWER(:{$paramValue})";
+            }
+
         }
 
         if ($operator === OperatorEnum::OPERATOR_DOES_NOT_CONTAIN) {
-            $queryBuilder->setParameter($paramValue, "%{$value}%");
-            $sql = "LOWER($datumAlias.value) NOT LIKE LOWER(:{$paramValue})";
+            if ($datumType === DatumTypeEnum::TYPE_CHOICE_LIST || $datumType === DatumTypeEnum::TYPE_LIST) {
+                $queryBuilder->setParameter($paramValue, "%\"{$value}\"%");
+                $sql = "LOWER($datumAlias.value) NOT LIKE LOWER(:{$paramValue})";
+            } else {
+                $queryBuilder->setParameter($paramValue, "%{$value}%");
+                $sql = "LOWER($datumAlias.value) NOT LIKE LOWER(:{$paramValue})";;
+            }
         }
 
         if ($operator === OperatorEnum::OPERATOR_SUPERIOR) {
