@@ -80,6 +80,7 @@ class OperatorEnum
                 OperatorEnum::OPERATOR_CONTAINS => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_CONTAINS),
                 OperatorEnum::OPERATOR_DOES_NOT_CONTAIN => OperatorEnum::getLabelFromName(OperatorEnum::OPERATOR_DOES_NOT_CONTAIN),
             ],
+            default => []
         };
 
         if ($type !== 'item_name') {

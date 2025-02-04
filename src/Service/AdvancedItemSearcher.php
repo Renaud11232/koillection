@@ -172,11 +172,23 @@ class AdvancedItemSearcher
         }
 
         if ($operator === OperatorEnum::OPERATOR_EMPTY) {
-            $sql = "$datumAlias.id IS NOT NULL AND ($datumAlias.value IS NULL OR $datumAlias.value = '' OR $datumAlias.value = '[]')";
+            $property = match ($datumType) {
+                DatumTypeEnum::TYPE_IMAGE, DatumTypeEnum::TYPE_SIGN => 'image',
+                DatumTypeEnum::TYPE_VIDEO => 'video',
+                DatumTypeEnum::TYPE_FILE => 'file',
+                default => 'value'
+            };
+            $sql = "$datumAlias.id IS NOT NULL AND ($datumAlias.$property IS NULL OR $datumAlias.$property = '' OR $datumAlias.$property = '[]')";
         }
 
         if ($operator === OperatorEnum::OPERATOR_NOT_EMPTY) {
-            $sql = "($datumAlias.value IS NOT NULL AND $datumAlias.value != '' AND $datumAlias.value != '[]')";
+            $property = match ($datumType) {
+                DatumTypeEnum::TYPE_IMAGE, DatumTypeEnum::TYPE_SIGN => 'image',
+                DatumTypeEnum::TYPE_VIDEO => 'video',
+                DatumTypeEnum::TYPE_FILE => 'file',
+                default => 'value'
+            };
+            $sql = "($datumAlias.$property IS NOT NULL AND $datumAlias.$property != '' AND $datumAlias.$property != '[]')";
         }
 
         $queryBuilder->leftJoin('item.data', $datumAlias, 'WITH', "$datumAlias.label = :{$paramLabel} AND $datumAlias.type = :{$paramType}");

@@ -158,6 +158,7 @@ class AdvancedItemSearchController extends AbstractController
             DatumTypeEnum::TYPE_LIST, DatumTypeEnum::TYPE_CHOICE_LIST => $this->render('App/AdvancedItemSearch/_input_list.html.twig', ['datumLabel' => $label, 'datumType' => $type])->getContent(),
             DatumTypeEnum::TYPE_RATING => $this->render('App/AdvancedItemSearch/_input_rating.html.twig')->getContent(),
             DatumTypeEnum::TYPE_CHECKBOX => $this->render('App/AdvancedItemSearch/_input_checkbox.html.twig')->getContent(),
+            default => ''
         };
 
         return new JsonResponse([

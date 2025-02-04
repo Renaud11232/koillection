@@ -95,7 +95,7 @@ class DatumRepository extends ServiceEntityRepository
         return $this
             ->createQueryBuilder('datum')
             ->select('datum.label, datum.type')
-            ->where("datum.type NOT IN ('image', 'sign', 'video', 'file', 'price')")
+            ->where("datum.type NOT IN ('price')")
             ->andWhere('datum.item IS NOT NULL')
             ->addGroupBy('datum.label')
             ->addGroupBy('datum.type')
