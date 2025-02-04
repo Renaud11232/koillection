@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.8] / 2025-02-04
+### Fixes
+- Fix advanced search when item datum label contains a slash (benjaminjonard)
+
+### Miscellaneous
+- Update Contains behavior for lists in advanced search, it will now match full values (benjaminjonard)
+- Add 'exists', 'does not exist', 'empty' and 'not empty' operators in advanced search (benjaminjonard)
+- Add filters on file, image and video fields in advanced search (benjaminjonard)
+- Upgrade PHP and JS dependencies (benjaminjonard)
+- Update translations, thanks to all contributors on [Crowdin](https://crowdin.com/project/koillection)
+
 ## [1.6.7] / 2025-02-02
 ### Fixes
 - Fix empty values in lists for advanced item search (benjaminjonard)
