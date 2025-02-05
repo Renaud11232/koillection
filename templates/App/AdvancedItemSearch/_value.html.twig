@@ -1,5 +1,7 @@
 {% if datumType == 'text' or datumType == 'textarea' or datumType == 'link' or type == 'name' %}
     {{ include('/App/AdvancedItemSearch/_input_text.html.twig') }}
+{% elseif type == 'collection' %}
+    {{ include('/App/AdvancedItemSearch/_input_collection.html.twig') }}
 {% elseif datumType == 'country' %}
     {{ include('/App/AdvancedItemSearch/_input_country.html.twig') }}
 {% elseif datumType == 'date' %}

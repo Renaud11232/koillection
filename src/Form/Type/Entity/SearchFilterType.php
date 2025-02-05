@@ -12,7 +12,6 @@ use App\Enum\DatumTypeEnum;
 use App\Repository\DatumRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,8 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchFilterType extends AbstractType
 {
-    public function __construct(private readonly DatumRepository $datumRepository)
-    {
+    public function __construct(
+        private readonly DatumRepository $datumRepository
+    ) {
     }
 
     #[\Override]
@@ -58,6 +58,15 @@ class SearchFilterType extends AbstractType
                     $form
                         ->add('operator', ChoiceType::class, [
                             'choices' => array_flip(OperatorEnum::getOperatorsByType('item_name')),
+                            'required' => true,
+                        ])
+                    ;
+                }
+
+                if ($data->getType() === TypeEnum::TYPE_COLLECTION) {
+                    $form
+                        ->add('operator', ChoiceType::class, [
+                            'choices' => array_flip(OperatorEnum::getOperatorsByType('collection_name')),
                             'required' => true,
                         ])
                     ;
@@ -113,6 +122,18 @@ class SearchFilterType extends AbstractType
                     $form
                         ->add('operator', ChoiceType::class, [
                             'choices' => array_flip(OperatorEnum::getOperatorsByType('item_name')),
+                            'required' => true,
+                        ])
+                        ->add('value', TextType::class, [
+                            'required' => true,
+                        ])
+                    ;
+                }
+
+                if ($data['type'] === TypeEnum::TYPE_COLLECTION) {
+                    $form
+                        ->add('operator', ChoiceType::class, [
+                            'choices' => array_flip(OperatorEnum::getOperatorsByType('collection_name')),
                             'required' => true,
                         ])
                         ->add('value', TextType::class, [

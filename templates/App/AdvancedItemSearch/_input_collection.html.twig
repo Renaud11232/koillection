@@ -1,0 +1,11 @@
+<div class="input-field outlined">
+    <select id="{{ id|default('__id__') }}" name="{{ name|default('__name__') }}" data-controller="select--default">
+        <option value=""></option>
+        {% for collection in getUserCollections() %}
+            <option value="{{ collection.id }}" {% if value is defined and value == collection.id %}selected{% endif %}>
+                {{ collection.title }}
+            </option>
+        {% endfor %}
+    </select>
+    <label for="{{ id|default('__id__') }}">{{ 'label.value'|trans }}</label>
+</div>

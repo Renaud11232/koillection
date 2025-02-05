@@ -35,6 +35,7 @@ class AdvancedItemSearcher
 
                 $filterParts[] = match ($filter->getType()) {
                     TypeEnum::TYPE_NAME => $this->buildNameFilter($qb, $filter->getOperator(), $filter->getValue()),
+                    TypeEnum::TYPE_COLLECTION => $this->buildCollectionFilter($qb, $filter->getOperator(), $filter->getValue()),
                     TypeEnum::TYPE_DATUM => $this->buildDatumFilter($qb, $filter->getOperator(), $filter->getValue(), $filter->getDatumLabel(), $filter->getDatumType()),
                 };
 
@@ -78,6 +79,23 @@ class AdvancedItemSearcher
         if ($operator === OperatorEnum::OPERATOR_DOES_NOT_CONTAIN) {
             $queryBuilder->setParameter($paramValue, "%{$value}%");
             return "LOWER(item.name) NOT LIKE LOWER(:{$paramValue})";
+        }
+
+        return '';
+    }
+
+    private function buildCollectionFilter(QueryBuilder $queryBuilder, string $operator, string $value): string
+    {
+        $paramValue = uniqid('collection_value_');
+
+        if ($operator === OperatorEnum::OPERATOR_EQUAL) {
+            $queryBuilder->setParameter($paramValue, $value);
+            return "item.collection = :{$paramValue}";
+        }
+
+        if ($operator === OperatorEnum::OPERATOR_NOT_EQUAL) {
+            $queryBuilder->setParameter($paramValue, $value);
+            return "item.collection = :{$paramValue}";
         }
 
         return '';
