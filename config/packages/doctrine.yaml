@@ -2,7 +2,7 @@ doctrine:
     dbal:
         dbname: '%env(string:DB_NAME)%'
         host: '%env(string:DB_HOST)%'
-        port: '%env(int:DB_PORT)%'
+        port: '%env(string:DB_PORT)%'
         user: '%env(string:DB_USER)%'
         password: '%env(string:DB_PASSWORD)%'
         server_version: '%env(string:DB_VERSION)%'
