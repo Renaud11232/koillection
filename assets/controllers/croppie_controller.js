@@ -39,7 +39,7 @@ export default class extends Controller {
         let form = this.element.querySelector('.file-input');
         let self = this;
 
-        if (this.inputTarget.files && this.inputTarget.files[0]) {
+        //if (this.inputTarget.files && this.inputTarget.files[0]) {
             this.croppie.result({
                 type: "canvas",
                 size: { width: 200, height: 200 }
@@ -48,7 +48,7 @@ export default class extends Controller {
                 form.value = imgBase64;
                 self.currentPreviewTarget.src = imgBase64;
             });
-        }
+        //}
     }
 
     async injectCroppie({ detail: { content } }) {
