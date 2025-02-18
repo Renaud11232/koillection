@@ -3333,13 +3333,13 @@
     </unit>
     <unit id="WoECGqp" name="btn.scrap">
       <segment state="translated">
-        <source>Scrap</source>
+        <source>Scrape</source>
         <target>Coleta</target>
       </segment>
     </unit>
     <unit id="JJiTxDb" name="title.scrap">
       <segment state="translated">
-        <source>Scrap</source>
+        <source>Scrape</source>
         <target>Coleta</target>
       </segment>
     </unit>
