@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.9] / 2025-02-24
+### Fixes
+- Fix typo in scrape button/label definition (Knuf)
+- Fixed image handling/thumbnailing when scraping a collection (Knuf)
+
+### Miscellaneous
+- Use curl-impersonate, it should help avoid "Access denied" error when using the scraper (Knuf)
+- Add collection filter on advanced item search (benjaminjonard)
+- Upgrade PHP and JS dependencies (benjaminjonard)
+- Update translations, thanks to all contributors on [Crowdin](https://crowdin.com/project/koillection)
+
 ## [1.6.8] / 2025-02-04
 ### Fixes
 - Fix advanced search when item datum label contains a slash (benjaminjonard)
