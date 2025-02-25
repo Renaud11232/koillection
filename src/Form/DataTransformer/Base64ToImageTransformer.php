@@ -24,12 +24,8 @@ class Base64ToImageTransformer implements DataTransformerInterface
     {
         if ($file instanceof File && $file->getRealPath()) {
             $type = pathinfo($file->getRealPath(), PATHINFO_EXTENSION);
-            $response = $this->client->request(
-                'GET',
-                $file->getRealPath(),
-                ['timeout' => 2.5]
-            );
-            $this->originalBase64 = 'data:image/' . $type . ';base64,' . base64_encode($response->getContent());
+            $data = file_get_contents($file->getRealPath());
+            $this->originalBase64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
 
             return $this->originalBase64;
         }

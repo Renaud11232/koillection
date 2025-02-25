@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [1.6.10] / 2025-02-25
+### Fixes
+- Fix collection edition with thumbnails (benjaminjonard)
+
 ## [1.6.9] / 2025-02-24
 ### Fixes
 - Fix typo in scrape button/label definition (Knuf)
